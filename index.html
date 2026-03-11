@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treino Tayná</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6c5ce7" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Treino Tayná" />
+  <link rel="apple-touch-icon" href="media/icon-192.png" />
+
+  <style>
+    :root{
+      --primary:#6c5ce7;
+      --primary-2:#8c7cf8;
+      --secondary:#a29bfe;
+      --bg:#f4f6fb;
+      --card:#ffffff;
+      --text:#20242c;
+      --muted:#6b7280;
+      --success:#16a34a;
+      --danger:#dc2626;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:linear-gradient(180deg,#eef2ff 0%, #f8fafc 100%);
+      color:var(--text);
+    }
+
+    body{
+      min-height:100vh;
+      padding:18px;
+    }
+
+    .app{
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    .hero{
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:#fff;
+      padding:28px 22px;
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      width:240px;
+      height:240px;
+      right:-80px;
+      top:-80px;
+      border-radius:50%;
+      background:rgba(255,255,255,.12);
+    }
+
+    .hero h1{
+      margin:0 0 8px;
+      font-size:1.7rem;
+      line-height:1.1;
+    }
+
+    .hero p{
+      margin:0;
+      opacity:.95;
+      max-width:700px;
+    }
+
+    .hero-badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    .hero-badge{
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.16);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:.9rem;
+      backdrop-filter:blur(8px);
+    }
+
+    .install-tip{
+      margin-top:14px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.18);
+      padding:12px 14px;
+      border-radius:14px;
+      font-size:.95rem;
+    }
+
+    .toolbar{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .toolbar-card{
+      flex:1 1 220px;
+      background:var(--card);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+
+    .toolbar-title{
+      font-size:.86rem;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .toolbar-value{
+      font-size:1.05rem;
+      font-weight:700;
+    }
+
+    details{
+      background:var(--card);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      margin-bottom:16px;
+      overflow:hidden;
+    }
+
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding:18px 18px;
+      font-weight:800;
+      font-size:1.05rem;
+      color:var(--text);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      user-select:none;
+    }
+
+    summary::-webkit-details-marker{display:none}
+
+    summary .day-meta{
+      font-size:.85rem;
+      font-weight:600;
+      color:var(--muted);
+    }
+
+    .workout-list{
+      padding:0 16px 16px;
+    }
+
+    .exercise{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      padding:16px 0;
+      border-bottom:1px solid #eceef4;
+      flex-wrap:wrap;
+    }
+
+    .exercise:last-child{
+      border-bottom:none;
+    }
+
+    .ex-info{
+      flex:1 1 320px;
+      min-width:260px;
+    }
+
+    .ex-name{
+      font-weight:800;
+      font-size:1rem;
+      color:var(--primary);
+      text-decoration:underline;
+      cursor:pointer;
+      display:inline-block;
+      margin-bottom:4px;
+    }
+
+    .ex-details{
+      color:var(--muted);
+      font-size:.93rem;
+    }
+
+    .ex-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      flex:1 1 280px;
+    }
+
+    .badge{
+      background:#f3f4f6;
+      color:#111827;
+      padding:8px 12px;
+      border-radius:12px;
+      font-weight:800;
+      font-size:.85rem;
+      white-space:nowrap;
+    }
+
+    .btn-group{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    button{
+      border:none;
+      cursor:pointer;
+      border-radius:12px;
+      font-weight:800;
+      padding:10px 12px;
+      transition:transform .15s ease, opacity .15s ease;
+    }
+
+    button:hover{transform:translateY(-1px)}
+    button:active{transform:translateY(0)}
+
+    .btn-action{
+      background:#eef2ff;
+      color:#312e81;
+    }
+
+    .btn-muscle{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .btn-secondary{
+      background:#f3f4f6;
+      color:#111827;
+    }
+
+    .tips, .footer-card{
+      background:var(--card);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:18px;
+      margin-top:16px;
+    }
+
+    .tips h2, .footer-card h2{
+      margin:0 0 12px;
+      font-size:1.1rem;
+    }
+
+    .tips ul{
+      padding-left:18px;
+      margin:0;
+      color:#374151;
+    }
+
+    .tips li{margin-bottom:8px}
+
+    .footer-card{
+      color:var(--muted);
+      text-align:center;
+      font-size:.95rem;
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.72);
+      z-index:2000;
+      justify-content:center;
+      align-items:center;
+      padding:16px;
+    }
+
+    .modal-content{
+      background:#fff;
+      border-radius:22px;
+      overflow:hidden;
+      width:min(100%,1000px);
+      max-height:92vh;
+      box-shadow:0 30px 80px rgba(0,0,0,.25);
+    }
+
+    .modal-header{
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:#fff;
+      padding:16px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+
+    .modal-header h3{
+      margin:0;
+      font-size:1.05rem;
+    }
+
+    .modal-close{
+      background:none;
+      color:#fff;
+      font-size:2rem;
+      line-height:1;
+      padding:0;
+    }
+
+    #videoModal .modal-content{
+      width:min(100%,1100px);
+    }
+
+    .video-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      padding:14px;
+      background:#0f172a;
+    }
+
+    .video-grid video{
+      width:100%;
+      max-height:70vh;
+      border-radius:14px;
+      background:#000;
+    }
+
+    @media (min-width: 900px){
+      .video-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    #muscleImage{
+      width:100%;
+      max-height:76vh;
+      object-fit:contain;
+      background:#fff;
+      display:block;
+    }
+
+    .history-body{
+      padding:18px;
+    }
+
+    .history-form{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .history-form input{
+      flex:1 1 180px;
+      padding:12px 14px;
+      border:1px solid #d1d5db;
+      border-radius:12px;
+      font-size:1rem;
+    }
+
+    .history-list{
+      list-style:none;
+      padding:0;
+      margin:0 0 16px;
+      max-height:220px;
+      overflow:auto;
+    }
+
+    .history-list li{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:11px 12px;
+      background:#f8fafc;
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      margin-bottom:8px;
+      font-size:.96rem;
+    }
+
+    .chart-box{
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:16px;
+      padding:12px;
+    }
+
+    .chart-box canvas{
+      width:100%;
+      height:240px;
+      display:block;
+    }
+
+    .empty{
+      color:var(--muted);
+      padding:14px;
+      background:#f8fafc;
+      border-radius:12px;
+      border:1px dashed #d1d5db;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background:#111827;
+      color:#fff;
+      padding:12px 16px;
+      border-radius:999px;
+      box-shadow:var(--shadow);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      z-index:3000;
+      font-size:.95rem;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(-6px);
+    }
+
+    .offline-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:#fff;
+      color:#111827;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      margin-top:14px;
+      font-size:.9rem;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--success);
+    }
+
+    .dot.offline{
+      background:var(--danger);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <h1>Treino Tayná 💪</h1>
+      <p>Plano semanal com vídeos, músculos-alvo e histórico de cargas. Interface pensada para abrir como app no iPhone pela Tela de Início.</p>
+
+      <div class="hero-badges">
+        <div class="hero-badge">100% PWA</div>
+        <div class="hero-badge">Vídeos offline</div>
+        <div class="hero-badge">Histórico salvo no aparelho</div>
+      </div>
+
+      <div class="offline-pill">
+        <span id="statusDot" class="dot"></span>
+        <span id="networkStatus">Pronto para uso</span>
+      </div>
+
+      <div class="install-tip">
+        No iPhone: abra no <strong>Safari</strong> e use <strong>Compartilhar → Adicionar à Tela de Início</strong>.
+      </div>
+    </header>
+
+    <section class="toolbar">
+      <div class="toolbar-card">
+        <div class="toolbar-title">Frequência</div>
+        <div class="toolbar-value">5x por semana</div>
+      </div>
+      <div class="toolbar-card">
+        <div class="toolbar-title">Perfil</div>
+        <div class="toolbar-value">26 anos • foco em inferiores</div>
+      </div>
+      <div class="toolbar-card">
+        <div class="toolbar-title">Modo</div>
+        <div class="toolbar-value">Uso offline + PWA</div>
+      </div>
+    </section>
+
+    <!-- SEGUNDA -->
+    <details open>
+      <summary>
+        <span>Segunda — Inferiores A (quadríceps + glúteo)</span>
+        <span class="day-meta">7 exercícios</span>
+      </summary>
+      <div class="workout-list">
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('agachamento-livre-ou-no-smith.mp4','agachamento-livre-ou-no-smith-lateral.mp4','Agachamento livre ou no smith')">Agachamento livre ou no smith</span>
+            <div class="ex-details">Descanso: 90–120s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 8–10</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Agachamento livre ou no smith')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Agachamento livre ou no smith')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('agachamento-livre-ou-no-smith.png','Agachamento livre ou no smith')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('leg-press-45.mp4','leg-press-45-lateral.mp4','Leg press 45°')">Leg press 45°</span>
+            <div class="ex-details">Descanso: 90–120s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Leg press 45°')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Leg press 45°')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('leg-press-45.png','Leg press 45°')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('afundo-bulg aro.mp4','afundo-bulg aro-lateral.mp4','Afundo búlgaro')">Afundo búlgaro</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10 cada perna</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Afundo búlgaro')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Afundo búlgaro')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('afundo-bulg aro.png','Afundo búlgaro')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('cadeira-extensora.mp4','cadeira-extensora-lateral.mp4','Cadeira extensora')">Cadeira extensora</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Cadeira extensora')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Cadeira extensora')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('cadeira-extensora.png','Cadeira extensora')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('hip-thrust.mp4','hip-thrust-lateral.mp4','Hip thrust')">Hip thrust</span>
+            <div class="ex-details">Descanso: 90–120s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 8–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Hip thrust')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Hip thrust')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('hip-thrust.png','Hip thrust')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('abdutora.mp4','abdutora-lateral.mp4','Abdutora')">Abdutora</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 15–20</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Abdutora')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Abdutora')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('abdutora.png','Abdutora')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('panturrilha.mp4','panturrilha-lateral.mp4','Panturrilha em pé ou sentado')">Panturrilha em pé ou sentado</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Panturrilha em pé ou sentado')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Panturrilha em pé ou sentado')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('panturrilha.png','Panturrilha em pé ou sentado')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TERÇA -->
+    <details>
+      <summary>
+        <span>Terça — Superiores + abdômen</span>
+        <span class="day-meta">9 exercícios</span>
+      </summary>
+      <div class="workout-list">
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('puxada-frontal.mp4','puxada-frontal-lateral.mp4','Puxada frontal')">Puxada frontal</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Puxada frontal')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Puxada frontal')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('puxada-frontal.png','Puxada frontal')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('remada-baixa.mp4','remada-baixa-lateral.mp4','Remada baixa')">Remada baixa</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Remada baixa')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Remada baixa')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('remada-baixa.png','Remada baixa')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('supino.mp4','supino-lateral.mp4','Supino máquina ou halteres')">Supino máquina ou halteres</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Supino máquina ou halteres')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Supino máquina ou halteres')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('supino.png','Supino máquina ou halteres')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('desenvolvimento-ombro.mp4','desenvolvimento-ombro-lateral.mp4','Desenvolvimento de ombro')">Desenvolvimento de ombro</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Desenvolvimento de ombro')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Desenvolvimento de ombro')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('desenvolvimento-ombro.png','Desenvolvimento de ombro')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('elevacao-lateral.mp4','elevacao-lateral-lateral.mp4','Elevação lateral')">Elevação lateral</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Elevação lateral')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Elevação lateral')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('elevacao-lateral.png','Elevação lateral')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('triceps-polia.mp4','triceps-polia-lateral.mp4','Tríceps polia')">Tríceps polia</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Tríceps polia')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Tríceps polia')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('triceps-polia.png','Tríceps polia')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('rosca.mp4','rosca-lateral.mp4','Rosca direta ou alternada')">Rosca direta ou alternada</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Rosca direta ou alternada')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Rosca direta ou alternada')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('rosca.png','Rosca direta ou alternada')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('prancha.mp4','prancha-lateral.mp4','Prancha')">Prancha</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 30–45s</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Prancha')">📝 Tempo/Carga</button>
+              <button class="btn-secondary" onclick="viewHistory('Prancha')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('prancha.png','Prancha')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('elevacao-pernas.mp4','elevacao-pernas-lateral.mp4','Elevação de pernas ou abdominal infra')">Elevação de pernas ou abdominal infra</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Elevação de pernas ou abdominal infra')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Elevação de pernas ou abdominal infra')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('elevacao-pernas.png','Elevação de pernas ou abdominal infra')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- QUARTA -->
+    <details>
+      <summary>
+        <span>Quarta — Inferiores B (posterior + glúteo)</span>
+        <span class="day-meta">7 exercícios</span>
+      </summary>
+      <div class="workout-list">
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('stiff.mp4','stiff-lateral.mp4','Levantamento terra romeno (stiff)')">Levantamento terra romeno (stiff)</span>
+            <div class="ex-details">Descanso: 90–120s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 8–10</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Levantamento terra romeno (stiff)')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Levantamento terra romeno (stiff)')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('stiff.png','Levantamento terra romeno (stiff)')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('mesa-flexora.mp4','mesa-flexora-lateral.mp4','Mesa flexora')">Mesa flexora</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Mesa flexora')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Mesa flexora')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('mesa-flexora.png','Mesa flexora')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('cadeira-flexora.mp4','cadeira-flexora-lateral.mp4','Cadeira flexora')">Cadeira flexora</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Cadeira flexora')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Cadeira flexora')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('cadeira-flexora.png','Cadeira flexora')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('passada.mp4','passada-lateral.mp4','Passada andando ou no lugar')">Passada andando ou no lugar</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10 cada perna</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Passada andando ou no lugar')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Passada andando ou no lugar')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('passada.png','Passada andando ou no lugar')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('hip-thrust.mp4','hip-thrust-lateral.mp4','Elevação pélvica / hip thrust')">Elevação pélvica / hip thrust</span>
+            <div class="ex-details">Descanso: 90–120s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Elevação pélvica / hip thrust')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Elevação pélvica / hip thrust')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('hip-thrust.png','Elevação pélvica / hip thrust')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('coice-polia.mp4','coice-polia-lateral.mp4','Coice na polia')">Coice na polia</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12–15 cada perna</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Coice na polia')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Coice na polia')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('coice-polia.png','Coice na polia')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('panturrilha.mp4','panturrilha-lateral.mp4','Panturrilha')">Panturrilha</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Panturrilha')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Panturrilha')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('panturrilha.png','Panturrilha')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- QUINTA -->
+    <details>
+      <summary>
+        <span>Quinta — Glúteo Pesado</span>
+        <span class="day-meta">6 exercícios</span>
+      </summary>
+      <div class="workout-list">
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('hip-thrust-pesado.mp4','hip-thrust-pesado-lateral.mp4','Hip thrust pesado')">Hip thrust pesado</span>
+            <div class="ex-details">Descanso: 90–120s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">5x 6–8</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Hip thrust pesado')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Hip thrust pesado')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('hip-thrust-pesado.png','Hip thrust pesado')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('agachamento-sumo.mp4','agachamento-sumo-lateral.mp4','Agachamento sumô com halter ou barra')">Agachamento sumô com halter ou barra</span>
+            <div class="ex-details">Descanso: 90–120s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Agachamento sumô com halter ou barra')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Agachamento sumô com halter ou barra')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('agachamento-sumo.png','Agachamento sumô com halter ou barra')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('step-up.mp4','step-up-lateral.mp4','Step-up no banco')">Step-up no banco</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10 cada perna</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Step-up no banco')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Step-up no banco')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('step-up.png','Step-up no banco')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('abdutora-pausa.mp4','abdutora-pausa-lateral.mp4','Abdutora com pausa de 1–2 s')">Abdutora com pausa de 1–2 s</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">4x 15–20</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Abdutora com pausa de 1–2 s')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Abdutora com pausa de 1–2 s')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('abdutora-pausa.png','Abdutora com pausa de 1–2 s')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('gluteo-cabo.mp4','gluteo-cabo-lateral.mp4','Glúteo no cabo')">Glúteo no cabo</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 15 cada perna</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Glúteo no cabo')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Glúteo no cabo')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('gluteo-cabo.png','Glúteo no cabo')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('stiff.mp4','stiff-lateral.mp4','Stiff')">Stiff</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Stiff')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Stiff')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('stiff.png','Stiff')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- SEXTA -->
+    <details>
+      <summary>
+        <span>Sexta — Superiores + finalização de inferiores</span>
+        <span class="day-meta">8 exercícios</span>
+      </summary>
+      <div class="workout-list">
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('remada-curvada.mp4','remada-curvada-lateral.mp4','Remada articulada ou curvada')">Remada articulada ou curvada</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Remada articulada ou curvada')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Remada articulada ou curvada')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('remada-curvada.png','Remada articulada ou curvada')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('puxada-aberta.mp4','puxada-aberta-lateral.mp4','Puxada aberta')">Puxada aberta</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 10–12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Puxada aberta')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Puxada aberta')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('puxada-aberta.png','Puxada aberta')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('crucifixo.mp4','crucifixo-lateral.mp4','Crucifixo máquina ou halteres')">Crucifixo máquina ou halteres</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Crucifixo máquina ou halteres')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Crucifixo máquina ou halteres')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('crucifixo.png','Crucifixo máquina ou halteres')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('elevacao-lateral.mp4','elevacao-lateral-lateral.mp4','Elevação lateral')">Elevação lateral</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 12–15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Elevação lateral (Sexta)')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Elevação lateral (Sexta)')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('elevacao-lateral.png','Elevação lateral')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('goblet-squat.mp4','goblet-squat-lateral.mp4','Agachamento goblet')">Agachamento goblet</span>
+            <div class="ex-details">Descanso: 60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Agachamento goblet')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Agachamento goblet')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('goblet-squat.png','Agachamento goblet')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('cadeira-extensora.mp4','cadeira-extensora-lateral.mp4','Cadeira extensora')">Cadeira extensora</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Cadeira extensora (Sexta)')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Cadeira extensora (Sexta)')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('cadeira-extensora.png','Cadeira extensora')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('mesa-flexora.mp4','mesa-flexora-lateral.mp4','Mesa Flexora')">Mesa Flexora</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 15</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Mesa Flexora')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Mesa Flexora')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('mesa-flexora.png','Mesa Flexora')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="ex-info">
+            <span class="ex-name" onclick="showVideo('abdutora.mp4','abdutora-lateral.mp4','Abdutora')">Abdutora</span>
+            <div class="ex-details">Descanso: 45–60s</div>
+          </div>
+          <div class="ex-actions">
+            <span class="badge">3x 20</span>
+            <div class="btn-group">
+              <button class="btn-action" onclick="openWeightModal('Abdutora (Sexta)')">📝 Peso</button>
+              <button class="btn-secondary" onclick="viewHistory('Abdutora (Sexta)')">📈 Histórico</button>
+              <button class="btn-muscle" onclick="showMuscle('abdutora.png','Abdutora')">🦵 Músculo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <section class="tips">
+      <h2>Lembretes importantes</h2>
+      <ul>
+        <li>Toque no nome do exercício para abrir os 2 vídeos: frontal e lateral.</li>
+        <li>Use o botão <strong>🦵 Músculo</strong> para abrir a imagem da região trabalhada.</li>
+        <li>Use <strong>📝 Peso</strong> para salvar a carga do dia.</li>
+        <li>O histórico fica salvo no próprio aparelho via armazenamento local.</li>
+        <li>Com o PWA instalado no iPhone, a experiência fica mais parecida com app nativo.</li>
+      </ul>
+    </section>
+
+    <section class="footer-card">
+      Feito com carinho para Tayná ✨ • versão PWA offline
+    </section>
+  </div>
+
+  <!-- Modal Histórico / Peso -->
+  <div class="modal" id="historyModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="historyTitle">Histórico</h3>
+        <button class="modal-close" onclick="closeHistoryModal()">×</button>
+      </div>
+      <div class="history-body">
+        <div class="history-form">
+          <input id="weightInput" type="number" step="0.1" min="0" placeholder="Digite o peso em kg" />
+          <button class="btn-action" onclick="saveCurrentWeight()">Salvar</button>
+        </div>
+        <ul id="historyList" class="history-list"></ul>
+        <div class="chart-box">
+          <canvas id="weightChart" width="900" height="260"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Vídeos -->
+  <div class="modal" id="videoModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="videoTitle">Vídeos</h3>
+        <button class="modal-close" onclick="closeVideoModal()">×</button>
+      </div>
+      <div class="video-grid">
+        <video id="video1" controls playsinline></video>
+        <video id="video2" controls playsinline></video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Músculo -->
+  <div class="modal" id="muscleModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="muscleTitle">Músculo</h3>
+        <button class="modal-close" onclick="closeMuscleModal()">×</button>
+      </div>
+      <img id="muscleImage" alt="Região muscular" />
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'treino_tayna_history_v2';
+    let currentExercise = '';
+    let currentVideoFiles = null;
+
+    function showToast(message){
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1800);
+    }
+
+    function getHistory(){
+      try{
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : {};
+      }catch(e){
+        return {};
+      }
+    }
+
+    function saveHistory(data){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function openWeightModal(name){
+      currentExercise = name;
+      document.getElementById('historyTitle').textContent = name;
+      document.getElementById('weightInput').value = '';
+      renderHistory(name);
+      document.getElementById('historyModal').style.display = 'flex';
+    }
+
+    function viewHistory(name){
+      currentExercise = name;
+      document.getElementById('historyTitle').textContent = name;
+      document.getElementById('weightInput').value = '';
+      renderHistory(name);
+      document.getElementById('historyModal').style.display = 'flex';
+    }
+
+    function saveCurrentWeight(){
+      if(!currentExercise) return;
+
+      const input = document.getElementById('weightInput');
+      const raw = String(input.value || '').replace(',', '.').trim();
+      const weight = parseFloat(raw);
+
+      if(isNaN(weight) || weight <= 0){
+        showToast('Digite um valor válido em kg');
+        return;
+      }
+
+      const history = getHistory();
+      if(!history[currentExercise]) history[currentExercise] = [];
+
+      history[currentExercise].unshift({
+        date: new Date().toLocaleDateString('pt-BR'),
+        timestamp: Date.now(),
+        weight
+      });
+
+      saveHistory(history);
+      input.value = '';
+      renderHistory(currentExercise);
+      showToast('Carga salva com sucesso');
+    }
+
+    function renderHistory(name){
+      const history = getHistory();
+      const data = history[name] || [];
+      const list = document.getElementById('historyList');
+
+      if(!data.length){
+        list.innerHTML = '<li class="empty">Nenhum registro ainda. Bora treinar! 💪</li>';
+      }else{
+        list.innerHTML = data.map(item => `
+          <li>
+            <span>${item.date}</span>
+            <strong>${item.weight} kg</strong>
+          </li>
+        `).join('');
+      }
+
+      drawChart(data);
+    }
+
+    function drawChart(data){
+      const canvas = document.getElementById('weightChart');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0,0,w,h);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0,0,w,h);
+
+      if(!data || data.length < 1){
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '16px sans-serif';
+        ctx.fillText('Sem dados para exibir gráfico.', 20, 40);
+        return;
+      }
+
+      const ordered = [...data].reverse();
+      const values = ordered.map(d => Number(d.weight));
+      const labels = ordered.map(d => d.date);
+
+      const max = Math.max(...values, 1);
+      const min = Math.min(...values, 0);
+      const padding = 40;
+      const chartW = w - padding * 2;
+      const chartH = h - padding * 2;
+
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 1;
+
+      for(let i=0;i<5;i++){
+        const y = padding + (chartH / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(w - padding, y);
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = '#6c5ce7';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+
+      ordered.forEach((item, index) => {
+        const x = padding + (chartW * (ordered.length === 1 ? 0.5 : index / (ordered.length - 1)));
+        const y = padding + chartH - ((item.weight - min) / ((max - min) || 1)) * chartH;
+        if(index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+
+      ctx.stroke();
+
+      ordered.forEach((item, index) => {
+        const x = padding + (chartW * (ordered.length === 1 ? 0.5 : index / (ordered.length - 1)));
+        const y = padding + chartH - ((item.weight - min) / ((max - min) || 1)) * chartH;
+
+        ctx.beginPath();
+        ctx.fillStyle = '#6c5ce7';
+        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#374151';
+        ctx.font = '12px sans-serif';
+        ctx.fillText(String(item.weight), x - 10, y - 10);
+
+        if(ordered.length <= 6){
+          ctx.fillStyle = '#6b7280';
+          ctx.fillText(labels[index], x - 18, h - 12);
+        }
+      });
+    }
+
+    function closeHistoryModal(){
+      document.getElementById('historyModal').style.display = 'none';
+    }
+
+    function showVideo(v1, v2, title){
+      currentVideoFiles = [v1, v2];
+      document.getElementById('videoTitle').textContent = title;
+
+      const video1 = document.getElementById('video1');
+      const video2 = document.getElementById('video2');
+
+      video1.src = `media/${v1}`;
+      video2.src = `media/${v2}`;
+
+      document.getElementById('videoModal').style.display = 'flex';
+    }
+
+    function closeVideoModal(){
+      const video1 = document.getElementById('video1');
+      const video2 = document.getElementById('video2');
+
+      video1.pause();
+      video2.pause();
+      video1.removeAttribute('src');
+      video2.removeAttribute('src');
+      video1.load();
+      video2.load();
+
+      document.getElementById('videoModal').style.display = 'none';
+    }
+
+    function showMuscle(img, title){
+      document.getElementById('muscleTitle').textContent = title;
+      document.getElementById('muscleImage').src = `media/${img}`;
+      document.getElementById('muscleModal').style.display = 'flex';
+    }
+
+    function closeMuscleModal(){
+      document.getElementById('muscleModal').style.display = 'none';
+    }
+
+    window.onclick = function(e){
+      if(e.target.id === 'historyModal') closeHistoryModal();
+      if(e.target.id === 'videoModal') closeVideoModal();
+      if(e.target.id === 'muscleModal') closeMuscleModal();
+    };
+
+    function updateNetworkStatus(){
+      const dot = document.getElementById('statusDot');
+      const label = document.getElementById('networkStatus');
+
+      if(navigator.onLine){
+        dot.classList.remove('offline');
+        label.textContent = 'Online ou pronto em cache';
+      }else{
+        dot.classList.add('offline');
+        label.textContent = 'Offline';
+      }
+    }
+
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+    updateNetworkStatus();
+
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('Service Worker registrado'))
+          .catch(err => console.log('Erro no Service Worker:', err));
+      });
+    }
+  </script>
+</body>
+</html>
